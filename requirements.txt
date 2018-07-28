@@ -1,0 +1,6 @@
+Django==2.0.7
+-e git+https://github.com/lazybird/django-solo.git@4ba01cd66f1c4b1886cec0bdf81887954254ef15#egg=django_solo
+django-taggit==0.22.2
+Markdown==2.6.11
+Pillow==5.2.0
+pytz==2018.5

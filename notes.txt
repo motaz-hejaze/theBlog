@@ -1,0 +1,19 @@
+# Notes about blog project #
+
+django version == 2.0.7
+
+pytz is installed by default in django 2
+
+author = models.ForeignKey(User , related_name='blog_posts')
+TypeError: __init__() missing 1 required positional argument: 'on_delete'
+
+
+blog urls.py
+
+{% load static %} not staticfiles
+
+from django.urls import reverse
+
+app_name='blog' in blog.urls
+
+my.blog.project.mailer@gmail.com

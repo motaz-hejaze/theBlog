@@ -1,0 +1,57 @@
+{% extends "blog/base.html" %}
+{% load blog_tags %}
+{% block title %}Share a post{% endblock %}
+{% block content %}
+<div class="container">
+	
+
+{% if sent %}
+<br>
+<h1>E-mail successfully sent</h1>
+<br>
+<p>
+"{{ post.title }}" was successfully sent to {{ to }}.
+</p>
+<p>
+    <a class="btn btn-info btn-block" href="{{ post.get_absolute_url }}">Back to post</a>
+</p>
+<p>
+    <a class="btn btn-info btn-block" href="{% url 'blog:post_list' %}">Home</a>
+</p>
+{% else %}
+<br>
+<div class="row">
+<div class="col-md-1">
+	
+</div>
+	
+
+<div class="col-md-10">
+	<h1>Share "{{ post.title }}" by e-mail</h1>
+		<form action="{% url 'blog:post_share' post.id %}" method="post">
+					{% csrf_token %}
+					
+            		{% for field in form %}
+         		    <div class="form-group">
+
+	                {{ field.errors }}
+	                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+					{{ field|addcss:'form-control' }}
+	                
+	              	</div>
+	              	{% endfor %}
+
+		<input class="btn btn-info btn-block" type="submit" value="Share the Post">
+		</form>
+	
+	
+	<br>
+	
+</div>
+<div class="col-md-1">
+	
+</div>
+<br>
+</div>
+{% endif %}
+{% endblock %}

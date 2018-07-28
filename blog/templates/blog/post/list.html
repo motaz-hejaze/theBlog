@@ -1,0 +1,127 @@
+{% extends "blog/base.html" %}
+{% load blog_tags %}
+{% block title %}Django News{% endblock %}
+{% block content %}
+
+<!-- Page Content -->
+    <div class="container">
+	<br>
+      <div class="row">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+
+          
+        {% if tag %}
+		<h1>Posts Tagged with: "{{ tag.name }}"</h1>
+		<br>
+		{% else %}
+		<h1 class="my-4">Django News
+            <small>Read latest news:</small>
+        </h1>
+        <br>
+		{% endif %}
+
+ {% for post in posts %}    
+
+          <!-- Blog Post -->
+          <div class="card mb-4">
+            <img class="card-img-top" src="{{ post.image.url }}" alt="Card image cap">
+            <div class="card-body">
+              <h2 class="card-title">{{ post.title}}</h2>
+              <p class="card-text">{{ post.body|truncatewords:216 }}</p>
+              <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Read More &rarr;</a>
+            </div>
+            <div class="card-footer text-muted">
+              Posted on {{ post.publish }} by
+              <a href="#">{{ post.author }}</a>
+            </div>
+          </div>
+     {% endfor %}
+
+        
+          
+
+        </div>
+
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+
+          <!-- Search Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Search Posts:</h5>
+            <div class="card-body">
+            	<form action="{% url 'blog:post_search' %}" method="get" accept-charset="utf-8">
+            		{% csrf_token %}
+            		{% for field in form %}
+         			<div class="input-group">
+	                
+	                {{ field.errors }}
+					{{ field|addcss:'form-control' }}
+	                <span class="input-group-btn">
+	                  <button type="submit" class="btn btn-secondary" type="button">Go!</button>
+	                </span>
+	              	</div>
+	              	{% endfor %}
+            	</form>
+        
+            </div>
+          </div>
+
+          <!-- Categories Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Tags:</h5>
+            <div class="card-body">
+            	
+              {% for tag in all_tags %}
+             
+				<a class="btn btn-default" href="{% url 'blog:post_list_by_tag' tag.slug %}">
+				{{ tag }}
+				</a>
+			
+			{% endfor %}
+		
+            </div>
+          </div> 
+
+          <!-- Side Widget -->
+           <div class="card my-4">
+            <h5 class="card-header">Django News</h5>
+            <div class="card-body">
+              Welcome to Django News , there are currently {% total_posts %} posts so far
+            </div>
+          </div> 
+          <div class="card my-4">
+            <h5 class="card-header">Latest Posts:</h5>
+            <div class="card-body">
+              {% show_latest_posts 3 %}
+            </div>
+          </div>
+          <div class="card my-4">
+            <h5 class="card-header">Most commented posts:</h5>
+            <div class="card-body">
+              	<ul>
+			{% for post in most_commented_posts %}
+			<li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+			{% endfor %}
+				</ul>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <!-- /.row -->
+	{% include 'blog/pagination.html' with page=posts %}
+{% endblock %}
+
+    </div>
+    <!-- /.container -->
+
+
+
+
+
+
+
+    
